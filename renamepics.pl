@@ -11,11 +11,11 @@ renamepics [?|-h|--help] [-m|--man]
            [-t|--test]
            [-s|--sortby=<name|num|time>] [-b|--basename=<base filename>] <dir>
 
-=item B<renamepics --help>
+renamepics --help
 
-=item B<renamepics --test --sortby=name --basedir=Beach_Party /pics/Beach_Party>
+renamepics --test --sortby=name --basename=Party /pics/party
 
-=item B<renamepics -t -s name -b Beach_Party /pics/Beach_Party>
+renamepics -t -s name -b Party /pics/party
 
 =head1 OPTIONS
 
@@ -23,93 +23,172 @@ renamepics [?|-h|--help] [-m|--man]
 
 =item B<-b, --basename=<basename>>
 
-Determines the base file name after the files have been renamed (e.g., 
-something.jpg could become "Beach_Party_0001.jpg" if the command is called with 
-the following option: --basname=Beach_Party).
+Specifies the base filename for the renamed files (e.g., Something.jpg could 
+become "Party_0001.jpg" if this command is called with the following
+option: --basname=Party). 
 
-=item B<-s, --sortby=<num|name|time>>
+Note: This script enforces a tight naming convention. Base filenames must 
+start with a capital letter and only contain alphanumeric characters and 
+underscores.
 
-Sorts the files in ascending order according to the number (num) in their
-existing filenames (e.g., something-2.jpg), according to the entire alphanumeric 
-filename (name), or according to when the photo/movie was taken (time).  This
-affects the numeric portion of the resulting filename and how the files will 
-sort alphanumerically after they have been renamed.
+=item B<-s, --sortby=<name|num|time>>
+
+Sorts the files in ascending order according to their entire alphanumeric 
+filenames (name), according to the number (num) in their existing filenames 
+(e.g., something-2.jpg), or according to the DateTimeOrigin EXIF meta data
+tag associated with the file (time).  
+
+Sorting affects the numeric portion of the resulting filename and how the
+files will sort alphanumerically after they have been renamed.
 
 =item B<-t, --test>
 
-No image or movie files are renamed; this flag executes the command in test
-mode.  A list of files that would be renamed are reported on screen and in the
-log files.
+No files will be renamed; this flag executes the command in test
+mode.  A list of files that would be renamed are reported on screen.
 
 =item B<-?, -h, --help>
 
-Displays a brief Help message.
+Displays a brief help message.
 
 =item B<-m, --man>
 
-Displays the Manual page.
+Displays a detailed help manual.
 
 =back
 
 =head1 DESCRIPTION
 
-This program is designed to ensure all picture and movie files in a given
-collection are named consistently, and are displayed in the desired order
-when sorted alphanumerically.
+This program ensures all files of certain types (or extensions) in a given
+folder are named consistently and displayed in the desired order when sorted
+alphanumerically.  This currently applies to picture and movie files of type
+JPG and WMV in a single directory; all other files are ignored.
 
-Users would typically sort and rename files in Picasa (Edit->Select All;
-File->Rename).  If the user enters "Something" as the desired filename,
-Picasa renames the selected files as:
+Imagine you have a folder with the following files.  (The DateTimeOrigin EXIF
+meta data value is shown in parenthesis.)
+             
+   P1140986.JPG.txt  (2016:09:14 09:56:07)
+   Something 056.JPG (2016:09:14 17:19:07)
+   something-1.JPG   (2016:09:04 23:17:53)
+   something-10.JPG  (2016:09:04 12:14:05)
+   something-3.jpg   (2016:09:04 10:17:53)
+   SOMETHING-3.wmv     
+   Something.JPG     (2016:09:04 10:17:53)
+   Something68.jpg   (2016:09:04 16:23:40)
+   Something_55.JPG  (2016:09:14 17:14:34)
+   test.log
 
-   Something.JPG
-   Something-1.JPG
-   Something-2.JPG
-   Something-3.JPG
+This program allows you to:
 
-When the file count exceeds 10, these files will not be displayed in a
-logical order when sorted alphanumerically.  (For example,
-Something-10 would be displayed before Something-9).  There are also
-times when users delete files resulting in missing numbers.
+   1. Sort these files in three distinct ways using the sortby=name, 
+      sortby=num, or sortby=time command line options.
 
-That is where this script comes into play.  It renames files (after the
-Picasa rename) to ensure they are logically ordered when sorted
-alphanumerically.  If no command line options are specified, it will
-rename the files specified above to:
+   2. Rename these files with a consistent naming conventing by providing a
+      basename using --basename=<base filename> command line option.
 
-   Something_0000.jpg
-   Something_0001.jpg
-   Something_0002.jpg
-   Something_0003.jpg
+These command line options and their impact on the resulting filenames
+are described below.
 
-assuming all files in the specified directory follow the same naming/
-numbering convention.  The program will make no changes, however, if the
-directory contains:
+=head2 Base Name <-b <base filename>|--basename=<base filename>>
 
-   1. No files with the following extensions: .jpg, .wmv (in any case).
-      All other file types are ignored.
+The base name allows the filenames in a given folder to contain the same root
+(see examples in the following sections).  The base name must start with a 
+capital letter and only contain alphanumeric characters and underscores.
 
-   2. Multiple files with different and/or unrecognized naming/numbering
-      conventions (e.g., something-1.jpg, something_else-2.jpg).  If the
-      -f option is specified, the script assumes that all files in the
-      directory follow the naming/numbering convention of the first file.
-      Files that deviate from this convention are not renamed.
+=head2 Sort by Name <-s name|-s=name|--sortby name|--sortby=name>
 
-If the specified directory contains the following files, for example, the
--n flag will reNumber the files sequentially.  Note the script determines
-standard naming/numbering convention in a case insensitive manner:
+When sorted by name (case insensitive, alphanumerically), we expect these files
+to be organized as follows after executing the following command:
 
-   Something_Else_0001.jpg => Something_Else_0001.jpg
-   Something_else_0004.Jpg => Something_else_0002.jpg
-   SomeThing_Else_0007.JPG => SomeThing_Else_0003.jpg
-   SOMETHING_ELSE_0010.jpg => SOMETHING_ELSE_0004.jpg
+   renamepics.pl -s name -b Party /pics/party 
+
+   P1140986.JPG       -->  Party_0001.jpg
+   Something 056.JPG  -->  Party_0002.jpg
+   something-1.JPG    -->  Party_0003.jpg
+   something-10.JPG   -->  Party_0004.jpg
+   something-3.jpg    -->  Party_0005.jpg
+   SOMETHING-3.wmv    -->  Party_0006.wmv
+   Something.JPG      -->  Party_0007.jpg
+   Something68.jpg    -->  Party_0008.jpg
+   Something_55.JPG   -->  Party_0009.jpg
+   test.log           -->  Not renamed (ignored)
+
+
+=head2 Sort by Number <-s num|-s=num|--sortby num|--sortby=num>
+
+To rename files by number, all (unignored) files in the folder must be named as
+follows:
+
+   <basename>[ -_]<number>.<extension>
+
+That is, all files in the folder must have the same basename (case insensitive),
+be followed by at most one space, dash (-) or underscore (_), and have a set of
+digits immediately preceding the extension.
+
+We cannot sort and rename the files in our example by number because they do
+not follow a consistent naming convention.  The script will terminate with an
+error message without renaming any files.
+
+To rename these files by the number in their original filenames, we must 
+delete (or appropriately rename) those files that violate the naming convention
+(namely P1140986.JPG).  Assuming we deleted P1140986.JPG, the files in this 
+example will be named as follows after executing the following command:
+
+   renamepics.pl -s num -b Party /pics/party
+
+   Something.JPG      -->  Party_0001.jpg
+   something-1.JPG    -->  Party_0002.jpg
+   something-3.jpg    -->  Party_0003.jpg
+   SOMETHING-3.wmv    -->  Party_0004.wmv
+   something-10.JPG   -->  Party_0005.jpg
+   Something_55.JPG   -->  Party_0006.jpg
+   Something 056.JPG  -->  Party_0007.jpg
+   Something68.jpg    -->  Party_0008.jpg
+   test.log           -->  Not renamed (ignored)           
+
+Note that if two files have same number (e.g., something-3.jpg and 
+SOMETHING-3.wmv), they are sorted case insensitive, alphanumerically first.
+That is why something-3.jpg is renamed to Party_0003.jpg and SOMETHING-3.wmv
+to Party_0004.wmv.
+
+=head2 Sort by Time <-s time|-s=time|--sortby time|--sortby=time>
+
+To rename files by time, all (unignored) files in the folder must contain a 
+value for the DateTimeOrigin EXIF meta data tag.
+
+We cannot sort and rename the files by time in our example because
+not all files contain a value for the DateTimeOrigin EXIF meta data tag.
+The script will terminate with an error message without renaming any files.
+
+To rename these files by time, we must delete those files with the missing
+information (or add the DateTimeOrigin EXIF meta data to them, if possible).
+Assuming we deleted SOMETHING-3.wmv, the files in this example will be
+named as follows after executing with the following command:
+
+   renamepics.pl -s time -b Party /pics/party
+
+   something-3.jpg   (2016:09:04 10:17:53)  -->  Party_0001.jpg
+   Something.JPG     (2016:09:04 10:17:53)  -->  Party_0002.jpg
+   something-10.JPG  (2016:09:04 12:14:05)  -->  Party_0003.jpg
+   Something68.jpg   (2016:09:04 16:23:40)  -->  Party_0004.jpg
+   something-1.JPG   (2016:09:04 23:17:53)  -->  Party_0005.jpg
+   P1140986.JPG.txt  (2016:09:14 09:56:07)  -->  Party_0006.jpg
+   Something_55.JPG  (2016:09:14 17:14:34)  -->  Party_0007.jpg
+   Something 056.JPG (2016:09:14 17:19:07)  -->  Party_0008.jpg
+   test.log 
+
+Note that if two files have same DateTimeOrigin value (e.g., something-3.jpg
+and Something.JPG), they are sorted case insensitive, alphanumerically first.
+That is why something-3.jpg is renamed to Party_0001.jpg and Something.JPG 
+to Party_0002.wmv.
 
 =head1 REVISION HISTORY
 
-Alazhar Shamshuddin   2008-04-01   Initial version
+Alazhar Shamshuddin   2016-06-22   Version 2.0
+Alazhar Shamshuddin   2008-04-01   Version 1.0
 
 =head1 COPYRIGHT
 
-(c) Copyright Alazhar Shamshuddin, 2008, All Rights Reserved.
+(c) Copyright Alazhar Shamshuddin, 2016, All Rights Reserved.
 
 =cut
 
@@ -133,8 +212,7 @@ use constant TRUE  => 1;
 use constant FALSE => 0;
 
 my $gMaxSeqNumDigits     = 4;
-my $gRenameReporFilename = '/home/Alazhar/.local/tmp/rename_report.txt';
-my @gFileTypes           = ('jpg', 'wmv', 'mp4');
+my @gFileTypes           = ('jpg', 'wmv');
 
 my $gLogger              = undef;
 my %gCmds                = ();
@@ -227,7 +305,7 @@ sub initLogger
          #   2008/03/26 15:16:14 [127] ERROR main::fnc file.pl (599): Message.
          #----------------------------------------------------------------------
          log4perl.appender.FILE          = Log::Log4perl::Appender::File
-         log4perl.appender.FILE.filename = /home/Alazhar/.local/tmp/renamepics.log
+         log4perl.appender.FILE.filename = /tmp/renamepics.log
          log4perl.appender.FILE.mode     = clobber
          log4perl.appender.FILE.layout   = PatternLayout
          log4perl.appender.FILE.layout.ConversionPattern = %d [%r] %p %l: %m%n
@@ -494,26 +572,33 @@ sub processDir
    $gLogger->info("Processing '$dirName'.");
 
    my %requiredFiles = ();
+   my @ingoredFiles  = ();
    my $fileTypes     = join("|", @gFileTypes);
 
    # Fetch the files we need to process into the requiredFiles hash.  We
    # only process the files in the current directory with specific extensions
-   # or file types. Subdirectories and all other file types are ignored.
+   # or file types. Subdirectories and all other file types are ignored (but
+   # captured for reporting purposes).
    foreach my $item (sort readdir($dirName_fh))
    {
       # Rename $item to include relative path information.
       my $itemWithPath = File::Spec->catfile($dirName, $item);
       $itemWithPath = File::Spec->canonpath($itemWithPath);
 
-      if (-f $itemWithPath && $item =~ m!.+\.($fileTypes)$!i)
+      if (-f $itemWithPath) 
       {
-         $requiredFiles{$item} = { curr_abs_path => $itemWithPath,
-                                   directory => $dirName,
-                                   status => 'Unprocessed'
-                                 }
+         if ($item =~ m!.+\.($fileTypes)$!i)
+         {
+            $requiredFiles{$item} = { curr_abs_path => $itemWithPath,
+                                      directory => $dirName,
+                                      status => 'Unprocessed'
+                                    }
+         }
+         else
+         {
+            push(@ingoredFiles, $item);
+         }
       }
-
-      $gLogger->info("Ignored item '$itemWithPath'.");
    }
    closedir($dirName_fh);
 
@@ -525,17 +610,17 @@ sub processDir
    # the required files.
    if ($isSortSuccessful == FALSE) 
    {
-      $gLogger->error("Could not sort files.  Hence we could not rename " .
-                      "the files.");
+      $gLogger->error("Encountered an error sorting the files in this " .
+                      "folder; hence no files could be renamed.");
    }
    else
    {
       renameFiles(\%requiredFiles);
    }
 
-   print(generateRenameReport(\%requiredFiles, 
-                              $dirName, 
-                              $gRenameReporFilename));
+   print(generateRenameReport(\%requiredFiles,
+                              \@ingoredFiles, 
+                              $dirName));
 }
 
 #-------------------------------------------------------------------------------
@@ -672,7 +757,7 @@ sub sortFiles
       $gLogger->logdie("Invalid sortby parameter '$gCmds{sortby}'.")
    }
 
-   if (length($seqNum) > $gMaxSeqNumDigits)
+   if (defined($seqNum) && length($seqNum) > $gMaxSeqNumDigits)
    {
       $gLogger->error("The last sequence number ('$seqNum') for the sorted " .
                       "files is longer than the maximum allowable sequence " .
@@ -818,18 +903,6 @@ sub sortFilesByTime
       $exifTool->ImageInfo($files_hr->{$file}->{curr_abs_path});
       $fileDateTime = $exifTool->GetValue($tag, 'ValueConv');
 
-      # Append a ".0" DateTimeOriginal value.  This allows us to increment
-      # this final digit (see the AddFileDateTimeEntry function) in case
-      # multiple files contain exactly the same value.
-      #
-      # Hence a DateTimeOriginal values is modified as follows:
-      #
-      #   2016:09:14 17:19:07 --> 2016:09:14 17:19:07.0
-      #
-      # It is subsequently treated and sorted as an alphanumeric value; not a
-      # DateTime object.
-      $fileDateTime = $fileDateTime . '.0';
-
       if (!defined($fileDateTime))
       {
          $gLogger->error("DateTimeOriginal EXIF data is missing for file " .
@@ -839,6 +912,18 @@ sub sortFilesByTime
       }
       else
       {
+         # Append a ".0" DateTimeOriginal value.  This allows us to increment
+         # this final digit (see the AddFileDateTimeEntry function) in case
+         # multiple files contain exactly the same value.
+         #
+         # Hence a DateTimeOriginal values is modified as follows:
+         #
+         #   2016:09:14 17:19:07 --> 2016:09:14 17:19:07.0
+         #
+         # It is subsequently treated and sorted as an alphanumeric value; not
+         # a DateTime object.
+         $fileDateTime = $fileDateTime . '.0';
+
          AddFileDateTimeEntry(\%fileDateTimes, $fileDateTime, $file);
       }
    }   
@@ -864,18 +949,23 @@ sub sortFilesByTime
 #
 # \param $_[0] [in] A reference to a hash of filenames keyed on the base 
 #                   filename that need to be or have been renamed.
-# \param $_[1] [in] The absolute path of the directory in which the files
-#                   were processed.
+# \param $_[1] [in] A reference to an array of filenames that were ignored by 
+#                   this script.
+# \param $_[2] [in] The absolute path of the directory in which the files
+#                   were processed (and ignored).
 #
 # \return The rename report as a string.
 #-------------------------------------------------------------------------------
 sub generateRenameReport
 {
-   my $files_hr = $_[0];
-   my $dirName  = $_[1];
+   my $files_hr        = $_[0];
+   my $ignoredFiles_ar = $_[1];
+   my $dirName         = $_[2];
 
    my $report = '';
    my $statusCounts_hr = getStatusCounts($files_hr);
+   my $numFilesProcessed = scalar(keys(%$files_hr));
+   my $numFilesIgnored = scalar(@$ignoredFiles_ar);
   
    my $dividerLine = "=" x 77 . "\n";
 
@@ -890,10 +980,11 @@ sub generateRenameReport
    $report .= "  Files with status 'Ready':       $statusCounts_hr->{Ready}\n";
    $report .= "  Files with status 'Unprocessed': $statusCounts_hr->{Unprocessed}\n";
    $report .= "  Files with status 'Error':       $statusCounts_hr->{Error}\n";
+   $report .= "\n";
+   $report .= "  Files with status 'Ignored':     $numFilesIgnored\n";
    $report .= $dividerLine;
    $report .= "\n";
 
-   my $numRecords  = scalar(keys(%$files_hr));
    my $dataFormat  = "%-24s | %-24s | %-23s\n";
    my $headerRow   = sprintf($dataFormat,
                              'Old Name', 'New Name', 'Status') .
@@ -902,12 +993,12 @@ sub generateRenameReport
                      '-' x 23 . "\n";
 
    $report .= $dividerLine;
-   $report .= "$dirName ($numRecords files)\n";
+   $report .= "$dirName ($numFilesProcessed files)\n";
    $report .= $dividerLine;
 
-   $report .= $headerRow if ($numRecords > 0);
+   $report .= $headerRow if ($numFilesProcessed > 0);
 
-   foreach my $file (sort(keys(%$files_hr)))
+   foreach my $file (sort {lc $a cmp lc $b} keys(%$files_hr))
    {
       $report .= sprintf($dataFormat,
                          $file,
@@ -915,7 +1006,14 @@ sub generateRenameReport
                          $files_hr->{$file}->{status});
    }
 
-   $report .= "$dirName ($numRecords files) - End\n\n";
+   foreach my $file (sort {lc $a cmp lc $b} @$ignoredFiles_ar)
+   {
+      $report .= sprintf($dataFormat,
+                         $file,
+                         'N/A',
+                         'Ignored');
+   }   
+
    return $report;
 }
 
