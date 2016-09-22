@@ -62,7 +62,7 @@ Displays a detailed help manual.
 This program ensures all files of certain types (or extensions) in a given
 folder are named consistently and displayed in the desired order when sorted
 alphanumerically.  This currently applies to picture and movie files of type
-JPG and WMV in a single directory; all other files are ignored.
+JPG, MP4 and WMV in a single directory; all other files are ignored.
 
 Imagine you have a folder with the following files.  (The DateTimeOrigin EXIF
 meta data value is shown in parenthesis.)
@@ -213,7 +213,7 @@ use constant TRUE  => 1;
 use constant FALSE => 0;
 
 my $gMaxSeqNumDigits     = 4;
-my @gFileTypes           = ('jpg', 'wmv');
+my @gFileTypes           = ('jpg', 'mp4', 'wmv');
 
 my $gLogger              = undef;
 my %gCmds                = ();
