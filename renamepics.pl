@@ -209,15 +209,15 @@ use Pod::Usage;                  # For printing usage clause and man page.
 ################################################################################
 # Global Variables
 ################################################################################
-use constant TRUE  => 1;
-use constant FALSE => 0;
+use constant TRUE    => 1;
+use constant FALSE   => 0;
 
-my $gMaxSeqNumDigits     = 4;
-my @gFileTypes           = ('jpg', 'mp4', 'wmv');
+my $gMaxSeqNumDigits = 4;
+my @gFileTypes       = ('jpg', 'mp4', 'wmv');
 
-my $gLogger              = undef;
-my %gCmds                = ();
-my %gRenameReport        = ();
+my $gLogger          = undef;
+my %gCmds            = ();
+my %gRenameReport    = ();
 
 ################################################################################
 # Subroutines
@@ -360,7 +360,7 @@ sub processCmdLineArgs
    $gCmds{directory} = shift(@ARGV);
 
    Pod::Usage::pod2usage(1) if $gCmds{help};
-   Pod::Usage::pod2usage( -verbose => 2 ) if $gCmds{man};
+   Pod::Usage::pod2usage(-verbose => 2) if $gCmds{man};
 
    # Ensure the sortby option is specified.
    if (!defined($gCmds{sortby}))
@@ -657,7 +657,7 @@ sub renameFiles
    my %oldFileNames = ();
    my %newFileNames = ();
 
-   foreach my $file (keys(%$files_hr))
+   foreach my $file (sort {lc($a) cmp lc($b)} keys(%$files_hr))
    {
       $file =~ m!.+\.($fileTypes)$!i;
       $fileType = $1;
@@ -689,7 +689,7 @@ sub renameFiles
 
    if (!$gCmds{test}) 
    {
-      foreach my $file (keys(%$files_hr))
+      foreach my $file (sort {lc($a) cmp lc($b)} keys(%$files_hr))
       {      
          # Rename the file.
          move($files_hr->{$file}->{curr_abs_path}, 
