@@ -44,7 +44,7 @@ files will sort alphanumerically after they have been renamed.
 
 =item B<-t, --test>
 
-No files will be renamed; this flag executes the command in test
+No files will be renamed; this flag executes the script in test
 mode.  A list of files that would be renamed are reported on screen.
 
 =item B<-?, -h, --help>
@@ -181,6 +181,26 @@ Note that if two files have same DateTimeOrigin value (e.g., something-3.jpg
 and Something.JPG), they are sorted case insensitive, alphanumerically first.
 That is why something-3.jpg is renamed to Party_0001.jpg and Something.JPG 
 to Party_0002.wmv.
+
+=head2 Rename Report
+
+Upon successful execution, this script produces a report that indicates the 
+status of each file.  Those statuses are defined below:
+
+   Renamed:     The file was successfully renamed.
+
+   Ready:       The file could have been renamed successfully but it was not 
+                modified because the script was executed in test mode.
+
+   Unprocessed: The file was not processed (likely because the script 
+                terminated prematurely due to an error).  See the log
+                file and/or screen output for details.
+
+   Error:       The file could not be renamed due to an error.  See the log
+                file and/or screen output for details.
+
+   Ignored:     This file was ignored because it does not contain a file
+                extension that this script was designed to process.
 
 =head1 REVISION HISTORY
 
@@ -578,8 +598,8 @@ sub processDir
 
    # Fetch the files we need to process into the requiredFiles hash.  We
    # only process the files in the current directory with specific extensions
-   # or file types. Subdirectories and all other file types are ignored (but
-   # captured for reporting purposes).
+   # or file types. Subdirectories are ignored.  All other file types are also
+   # ignored but captured for reporting purposes.
    foreach my $item (sort readdir($dirName_fh))
    {
       # Rename $item to include relative path information.
@@ -593,7 +613,7 @@ sub processDir
             $requiredFiles{$item} = { curr_abs_path => $itemWithPath,
                                       directory => $dirName,
                                       status => 'Unprocessed'
-                                    }
+                                    };
          }
          else
          {
@@ -1022,9 +1042,10 @@ sub generateRenameReport
 # Gets a count of the number of files in each state as shown below:
 #
 #    {
-#       'Ready' => 14,
-#       'Error' => 0,
-#       'Renamed' => 0
+#       'Renamed'     => 0
+#       'Ready'       => 0,
+#       'Unprocessed' => 0,
+#       'Error'       => 0
 #    };
 #
 # \param $_[0] [in] A reference to a hash of filenames keyed on the base 
@@ -1036,8 +1057,8 @@ sub getStatusCounts
 {
    my $files_hr = $_[0];
 
-   my %statusCounts = (Ready       => 0,
-                       Renamed     => 0,
+   my %statusCounts = (Renamed     => 0,
+                       Ready       => 0,
                        Error       => 0,
                        Unprocessed => 0);
 
