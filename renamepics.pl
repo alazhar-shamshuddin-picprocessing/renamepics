@@ -24,20 +24,20 @@ renamepics -t -s name -b Party /pics/party
 
 =item B<-b, --basename=<basename>>
 
-Specifies the base filename for the renamed files (e.g., Something.jpg could 
+Specifies the base filename for the renamed files (e.g., Something.jpg could
 become "Party_0001.jpg" if this command is called with the following
-option: --basname=Party). 
+option: --basname=Party).
 
-Note: This script enforces a tight naming convention. Base filenames must 
-start with a capital letter and only contain alphanumeric characters and 
+Note: This script enforces a tight naming convention. Base filenames must
+start with a capital letter and only contain alphanumeric characters and
 underscores.
 
 =item B<-s, --sortby=<name|num|time>>
 
-Sorts the files in ascending order according to their entire alphanumeric 
-filenames (name), according to the number (num) in their existing filenames 
+Sorts the files in ascending order according to their entire alphanumeric
+filenames (name), according to the number (num) in their existing filenames
 (e.g., something-2.jpg), or according to the DateTimeOrigin EXIF meta data
-tag associated with the file (time).  
+tag associated with the file (time).
 
 Sorting affects the numeric portion of the resulting filename and how the
 files will sort alphanumerically after they have been renamed.
@@ -66,13 +66,13 @@ JPG, MP4 and WMV in a single directory; all other files are ignored.
 
 Imagine you have a folder with the following files.  (The DateTimeOrigin EXIF
 meta data value is shown in parenthesis.)
-             
+
    P1140986.JPG.txt  (2016:09:14 09:56:07)
    Something 056.JPG (2016:09:14 17:19:07)
    something-1.JPG   (2016:09:04 23:17:53)
    something-10.JPG  (2016:09:04 12:14:05)
    something-3.jpg   (2016:09:04 10:17:53)
-   SOMETHING-3.wmv     
+   SOMETHING-3.wmv
    Something.JPG     (2016:09:04 10:17:53)
    Something68.jpg   (2016:09:04 16:23:40)
    Something_55.JPG  (2016:09:14 17:14:34)
@@ -80,7 +80,7 @@ meta data value is shown in parenthesis.)
 
 This program allows you to:
 
-   1. Sort these files in three distinct ways using the sortby=name, 
+   1. Sort these files in three distinct ways using the sortby=name,
       sortby=num, or sortby=time command line options.
 
    2. Rename these files with a consistent naming conventing by providing a
@@ -92,7 +92,7 @@ are described below.
 =head2 Base Name <-b <base filename>|--basename=<base filename>>
 
 The base name allows the filenames in a given folder to contain the same root
-(see examples in the following sections).  The base name must start with a 
+(see examples in the following sections).  The base name must start with a
 capital letter and only contain alphanumeric characters and underscores.
 
 =head2 Sort by Name <-s name|-s=name|--sortby name|--sortby=name>
@@ -100,7 +100,7 @@ capital letter and only contain alphanumeric characters and underscores.
 When sorted by name (case insensitive, alphanumerically), we expect these files
 to be organized as follows after executing the following command:
 
-   renamepics.pl -s name -b Party /pics/party 
+   renamepics.pl -s name -b Party /pics/party
 
    P1140986.JPG       -->  Party_0001.jpg
    Something 056.JPG  -->  Party_0002.jpg
@@ -129,9 +129,9 @@ We cannot sort and rename the files in our example by number because they do
 not follow a consistent naming convention.  The script will terminate with an
 error message without renaming any files.
 
-To rename these files by the number in their original filenames, we must 
+To rename these files by the number in their original filenames, we must
 delete (or appropriately rename) those files that violate the naming convention
-(namely P1140986.JPG).  Assuming we deleted P1140986.JPG, the files in this 
+(namely P1140986.JPG).  Assuming we deleted P1140986.JPG, the files in this
 example will be named as follows after executing the following command:
 
    renamepics.pl -s num -b Party /pics/party
@@ -144,16 +144,16 @@ example will be named as follows after executing the following command:
    Something_55.JPG   -->  Party_0006.jpg
    Something 056.JPG  -->  Party_0007.jpg
    Something68.jpg    -->  Party_0008.jpg
-   test.log           -->  Not renamed (ignored)           
+   test.log           -->  Not renamed (ignored)
 
-Note that if two files have same number (e.g., something-3.jpg and 
+Note that if two files have same number (e.g., something-3.jpg and
 SOMETHING-3.wmv), they are sorted case insensitive, alphanumerically first.
 That is why something-3.jpg is renamed to Party_0003.jpg and SOMETHING-3.wmv
 to Party_0004.wmv.
 
 =head2 Sort by Time <-s time|-s=time|--sortby time|--sortby=time>
 
-To rename files by time, all (unignored) files in the folder must contain a 
+To rename files by time, all (unignored) files in the folder must contain a
 value for the DateTimeOrigin EXIF meta data tag.
 
 We cannot sort and rename the files by time in our example because
@@ -175,24 +175,24 @@ named as follows after executing with the following command:
    P1140986.JPG.txt  (2016:09:14 09:56:07)  -->  Party_0006.jpg
    Something_55.JPG  (2016:09:14 17:14:34)  -->  Party_0007.jpg
    Something 056.JPG (2016:09:14 17:19:07)  -->  Party_0008.jpg
-   test.log 
+   test.log
 
 Note that if two files have same DateTimeOrigin value (e.g., something-3.jpg
 and Something.JPG), they are sorted case insensitive, alphanumerically first.
-That is why something-3.jpg is renamed to Party_0001.jpg and Something.JPG 
+That is why something-3.jpg is renamed to Party_0001.jpg and Something.JPG
 to Party_0002.wmv.
 
 =head2 Rename Report
 
-Upon successful execution, this script produces a report that indicates the 
+Upon successful execution, this script produces a report that indicates the
 status of each file.  Those statuses are defined below:
 
    Renamed:     The file was successfully renamed.
 
-   Ready:       The file could have been renamed successfully but it was not 
+   Ready:       The file could have been renamed successfully but it was not
                 modified because the script was executed in test mode.
 
-   Unprocessed: The file was not processed (likely because the script 
+   Unprocessed: The file was not processed (likely because the script
                 terminated prematurely due to an error).  See the log
                 file and/or screen output for details.
 
@@ -272,7 +272,7 @@ sub main
    $gLogger->info("*** Executing $0. ***");
 
    processCmdLineArgs(\%gCmds);
-   
+
    my $dirName = File::Spec->canonpath($gCmds{directory});
    $dirName = File::Spec->rel2abs($dirName);
    processDir($dirName);
@@ -313,11 +313,11 @@ sub initLogger
          #log4perl.filter.MatchInfo.LevelToMatch = WARN
          #log4perl.filter.MatchInfo.AcceptOnMatch = true
 
-         # Filter to match range from WARN up 
-         log4perl.filter.MatchWarnUp = Log::Log4perl::Filter::LevelRange 
-         log4perl.filter.MatchWarnUp.LevelMin = WARN 
-         #log4perl.filter.MatchWarnUp.LevelMax = FATAL 
-         log4perl.filter.MatchWarnUp.AcceptOnMatch = true         
+         # Filter to match range from WARN up
+         log4perl.filter.MatchWarnUp = Log::Log4perl::Filter::LevelRange
+         log4perl.filter.MatchWarnUp.LevelMin = WARN
+         #log4perl.filter.MatchWarnUp.LevelMax = FATAL
+         log4perl.filter.MatchWarnUp.AcceptOnMatch = true
 
          #----------------------------------------------------------------------
          # For writing log messages to a file in the following format:
@@ -361,7 +361,7 @@ sub initLogger
 # or the help or manual pages if the user explicitly requests them.
 # Displaying the usage clause, help page and manual pages via pod2usage
 # automatically terminates this script.
-# 
+#
 # \return None.
 #-------------------------------------------------------------------------------
 sub processCmdLineArgs
@@ -375,12 +375,27 @@ sub processCmdLineArgs
         "man|m"        => \$gCmds{man}
       );
 
+   Pod::Usage::pod2usage(1) if $gCmds{help};
+   Pod::Usage::pod2usage(-verbose => 2) if $gCmds{man};
+
    # We expect no remaining commands/options on the command line after we
    # retrieve the directory.  @ARGV should be empty after the following line.
    $gCmds{directory} = shift(@ARGV);
 
-   Pod::Usage::pod2usage(1) if $gCmds{help};
-   Pod::Usage::pod2usage(-verbose => 2) if $gCmds{man};
+   # Ensure a directory is specified.  Without this check, if $gCmds{directory}
+   # is undefined, our code for constructing absolute paths assumes the
+   # current working directory.  I prefer users explicitly specify the
+   # directory they want to process, even if it is the current working
+   # directory.
+   if (!defined($gCmds{directory}))
+   {
+      my $msg = "A directory must be specified.";
+
+      $gLogger->info($msg);
+      print(STDERR "$msg\n\n");
+
+      Pod::Usage::pod2usage(1);
+   }
 
    # Ensure the sortby option is specified.
    if (!defined($gCmds{sortby}))
@@ -390,11 +405,11 @@ sub processCmdLineArgs
       $gLogger->info($msg);
       print(STDERR "$msg\n\n");
 
-      Pod::Usage::pod2usage(1);       
-   }   
+      Pod::Usage::pod2usage(1);
+   }
 
    # Ensure the sortby option is set to name, num or time.
-   if ($gCmds{sortby} && $gCmds{sortby} !~ m!^(name|num|time)$!) 
+   if ($gCmds{sortby} && $gCmds{sortby} !~ m!^(name|num|time)$!)
    {
       my $msg = "Invalid sortby option '$gCmds{sortby}'.  It must be one of " .
                 "name, num or time.";
@@ -402,7 +417,7 @@ sub processCmdLineArgs
       $gLogger->info($msg);
       print(STDERR "$msg\n\n");
 
-      Pod::Usage::pod2usage(1); 
+      Pod::Usage::pod2usage(1);
    }
 
    # Ensure the base name option is specified.
@@ -413,11 +428,11 @@ sub processCmdLineArgs
       $gLogger->info($msg);
       print(STDERR "$msg\n\n");
 
-      Pod::Usage::pod2usage(1);       
-   } 
+      Pod::Usage::pod2usage(1);
+   }
 
    # Ensure the specified base filename follows our naming convention.
-   if ($gCmds{basename} && $gCmds{basename} !~ m!^[A-Z][A-Za-z0-9_]*$!) 
+   if ($gCmds{basename} && $gCmds{basename} !~ m!^[A-Z][A-Za-z0-9_]*$!)
    {
       my $msg = "Invalid base filename '$gCmds{basename}'.  It must start " .
                 "with a capital letter and only contain alphanumeric " .
@@ -426,12 +441,12 @@ sub processCmdLineArgs
       $gLogger->info($msg);
       print(STDERR "$msg\n\n");
 
-      Pod::Usage::pod2usage(1); 
-   }   
+      Pod::Usage::pod2usage(1);
+   }
 
    # Ensure there are no more command line parameters to process.  Currently
    # we do not allow the user to process more than one directory at a time.
-   if (scalar(@ARGV) > 0) 
+   if (scalar(@ARGV) > 0)
    {
       my $dirs = join(',', @ARGV);
       my $msg = "Invalid command line entries: '$dirs'.  $0 can only " .
@@ -440,7 +455,7 @@ sub processCmdLineArgs
       $gLogger->info($msg);
       print(STDERR "$msg\n\n");
 
-      Pod::Usage::pod2usage(1);     
+      Pod::Usage::pod2usage(1);
    }
 }
 
@@ -453,8 +468,8 @@ sub processCmdLineArgs
 # value extracted from the file's EXIF data, and the value is the base
 # filename.
 #
-# Note: This is a helper method to the SortFilesByTime function.  If there is a 
-# a date time key collision, this method increments the date time value as 
+# Note: This is a helper method to the SortFilesByTime function.  If there is a
+# a date time key collision, this method increments the date time value as
 # follows until a unique value is found:
 #
 #   2016:09:14 17:19:07.0 --> 2016:09:14 17:19:07.1
@@ -471,8 +486,8 @@ sub AddFileDateTimeEntry
    my $fileDateTimes_hr = $_[0];
    my $fileDateTime     = $_[1];
    my $fileName         = $_[2];
- 
-   if (exists($fileDateTimes_hr->{$fileDateTime})) 
+
+   if (exists($fileDateTimes_hr->{$fileDateTime}))
    {
       # This date time value already exists.  Hence increment the trailing
       # digit until a unique value is found.
@@ -491,8 +506,8 @@ sub AddFileDateTimeEntry
 # value extracted from the filename itself, and the value is the base
 # filename.
 #
-# Note: This is a helper method to the SortFilesByNum function.  If the key 
-# already exists, it is incremented until a unique value is found.  (The only 
+# Note: This is a helper method to the SortFilesByNum function.  If the key
+# already exists, it is incremented until a unique value is found.  (The only
 # time a numerical key will exist is when you have the same filename in a folder
 # with different file types or extensions.  For example:
 #
@@ -514,8 +529,8 @@ sub AddFileNumEntry
 
    if (exists($fileNums_hr->{$fileNum}))
    {
-      # This file number value already exists.  Hence increment it until a 
-      # unique value is found.      
+      # This file number value already exists.  Hence increment it until a
+      # unique value is found.
       AddFileNumEntry($fileNums_hr, $fileNum + 1, $fileName);
    }
    else
@@ -530,20 +545,20 @@ sub AddFileNumEntry
 #
 #    Something_0001.jpg
 #    |---1---| |-2| |3|
-# 
+#
 # Where:
 #    1 = Basename
 #    2 = Sequence number
 #    3 = File type or extension
 #
 # Note the following:
-#    1. This method will always generate filenames with lowercased 
+#    1. This method will always generate filenames with lowercased
 #       extensions.
-#   
-#    2. If sequence number contains more digits than the maximum allowable 
+#
+#    2. If sequence number contains more digits than the maximum allowable
 #       digits, the maximum will be ignored.  If it contains fewer digits,
 #       if will be left-padded with zeros.
-# 
+#
 # \param $_[0] [in] The base filename.
 # \param $_[1] [in] The sequence number.
 # \param $_[2] [in] The maximum allowable digits in the sequence number.
@@ -558,7 +573,7 @@ sub generateNewName
    my $maxSeqNumLength = $_[2];
    my $extension       = lc($_[3]);
 
-   if (length($seqNum) > $maxSeqNumLength) 
+   if (length($seqNum) > $maxSeqNumLength)
    {
       $gLogger->logdie("File sequence number ($seqNum) is longer than the " .
                        "maximum allowable sequence number ($maxSeqNumLength " .
@@ -567,9 +582,9 @@ sub generateNewName
 
    my $seqNumFormat = '%0' . $maxSeqNumLength . 'd';
 
-   my $fileName = $baseName . 
-                  '_' . 
-                  sprintf($seqNumFormat, $seqNum) . 
+   my $fileName = $baseName .
+                  '_' .
+                  sprintf($seqNumFormat, $seqNum) .
                   '.' .
                   $extension;
 
@@ -606,7 +621,7 @@ sub processDir
       my $itemWithPath = File::Spec->catfile($dirName, $item);
       $itemWithPath = File::Spec->canonpath($itemWithPath);
 
-      if (-f $itemWithPath) 
+      if (-f $itemWithPath)
       {
          if ($item =~ m!.+\.($fileTypes)$!i)
          {
@@ -629,7 +644,7 @@ sub processDir
 
    # Rename the files only if we could establish the correct sorting order for
    # the required files.
-   if ($isSortSuccessful == FALSE) 
+   if ($isSortSuccessful == FALSE)
    {
       $gLogger->error("Encountered an error sorting the files in this " .
                       "folder; hence no files could be renamed.");
@@ -640,7 +655,7 @@ sub processDir
    }
 
    print(generateRenameReport(\%requiredFiles,
-                              \@ingoredFiles, 
+                              \@ingoredFiles,
                               $dirName));
 }
 
@@ -650,9 +665,9 @@ sub processDir
 #   'Something.jpg'     =>  { 'curr_abs_path' => '/pics/Something.jpg',
 #                             'seq_num' => 2
 #                           },
-#   'Something.wmv'     =>  { 'curr_abs_path' => '/pics/Something.wmv', 
+#   'Something.wmv'     =>  { 'curr_abs_path' => '/pics/Something.wmv',
 #                             'seq_num' => 1
-#                           },                               
+#                           },
 #   'Something-001.jpg' =>  { 'curr_abs_path' => '/pics/Something-001.jpg',
 #                             'seq_num' => 3
 #                           },
@@ -660,7 +675,7 @@ sub processDir
 #                             'seq_num' => 4
 #                           },
 #
-# \param $_[0] [in_out] A reference to a hash of filenames keyed on the base 
+# \param $_[0] [in_out] A reference to a hash of filenames keyed on the base
 #                       filename that need to be renamed.
 # \param $_[1] [in-out] A reference to rename record hash for the
 #                       directory being processed.
@@ -682,14 +697,14 @@ sub renameFiles
       $file =~ m!.+\.($fileTypes)$!i;
       $fileType = $1;
 
-      $files_hr->{$file}->{new_name} = 
-         generateNewName($gCmds{basename}, 
+      $files_hr->{$file}->{new_name} =
+         generateNewName($gCmds{basename},
                          $files_hr->{$file}->{seq_num},
                          $gMaxSeqNumDigits,
                          $fileType);
 
-      $files_hr->{$file}->{new_abs_path} = 
-         File::Spec->catfile($files_hr->{$file}->{directory}, 
+      $files_hr->{$file}->{new_abs_path} =
+         File::Spec->catfile($files_hr->{$file}->{directory},
                              $files_hr->{$file}->{new_name});
 
       $oldFileNames{$file} = $files_hr->{$file}->{new_name};
@@ -707,12 +722,12 @@ sub renameFiles
       $files_hr->{$file}->{status} = 'Ready'
    }
 
-   if (!$gCmds{test}) 
+   if (!$gCmds{test})
    {
       foreach my $file (sort {lc($a) cmp lc($b)} keys(%$files_hr))
-      {      
+      {
          # Rename the file.
-         move($files_hr->{$file}->{curr_abs_path}, 
+         move($files_hr->{$file}->{curr_abs_path},
               $files_hr->{$file}->{new_abs_path}) or
             $gLogger->error("Could not rename file '$file' to ".
                             "'$files_hr->{$file}->{new_abs_path}': $!");
@@ -728,8 +743,8 @@ sub renameFiles
 
 #-------------------------------------------------------------------------------
 # Sorts the specified files, as specified on the command line, according to
-# their names, embedded numbers in their filenames, or their creation date.  
-# This function modifies the specified hash to include a sort order or 
+# their names, embedded numbers in their filenames, or their creation date.
+# This function modifies the specified hash to include a sort order or
 # sequence number as shown below:
 #
 #    {
@@ -741,10 +756,10 @@ sub renameFiles
 #                            }
 #    }
 #
-# \param $_[0] [in_out] A reference to a hash of filenames keyed on the current 
+# \param $_[0] [in_out] A reference to a hash of filenames keyed on the current
 #                       filename that need to be sorted.
 #
-# \return TRUE if the files could be sorted and a sequence number is assigned 
+# \return TRUE if the files could be sorted and a sequence number is assigned
 #         to each file in the reference hash; FALSE otherwise.
 #-------------------------------------------------------------------------------
 sub sortFiles
@@ -754,7 +769,7 @@ sub sortFiles
    my $seqNum = undef;
    my $status = FALSE;
 
-   if ($gCmds{sortby} eq 'name') 
+   if ($gCmds{sortby} eq 'name')
    {
       $seqNum = 1;
 
@@ -766,11 +781,11 @@ sub sortFiles
 
       $status = TRUE;
    }
-   elsif ($gCmds{sortby} eq 'num') 
+   elsif ($gCmds{sortby} eq 'num')
    {
       $status = sortFilesByNum($files_hr, \$seqNum);
    }
-   elsif ($gCmds{sortby} eq 'time') 
+   elsif ($gCmds{sortby} eq 'time')
    {
       $status = sortFilesByTime($files_hr, \$seqNum);
    }
@@ -793,28 +808,28 @@ sub sortFiles
 
 #-------------------------------------------------------------------------------
 # Sorts the files by the trailing number in their filenames in ascending order.
-# The base filenames (minus the number) must be identical for all files that 
+# The base filenames (minus the number) must be identical for all files that
 # need to to be sorted.
 #
 # Please refer to the following examples:
 #
 #    P.jpg             --> seq_num = 1
 #    P111084.jpg       --> seq_num = 2
-#    P111088.jpg       --> seq_num = 3 
-# 
-#    Something.jpg     --> seq_num = 1 
-#    Something-0.jpg   --> seq_num = 2 
-#    Something-02.jpg  --> seq_num = 3 
+#    P111088.jpg       --> seq_num = 3
+#
+#    Something.jpg     --> seq_num = 1
+#    Something-0.jpg   --> seq_num = 2
+#    Something-02.jpg  --> seq_num = 3
 #
 #    Foo-1.jpg         --> Cannot be sorted
 #    Bar-2.jpg         --> Cannot be sorted
 #
-# \param $_[0] [in_out] A reference to a hash of filenames keyed on the base 
+# \param $_[0] [in_out] A reference to a hash of filenames keyed on the base
 #                       filename.
 # \param $_[1] [in_out] A reference to a scalar that will represent the
 #                       maximum sequence number once the files are sorted.
 #
-# \return TRUE if the files could be sorted and a sequence number is assigned 
+# \return TRUE if the files could be sorted and a sequence number is assigned
 #         to each file in the reference hash; FALSE otherwise.
 #-------------------------------------------------------------------------------
 sub sortFilesByNum
@@ -846,23 +861,23 @@ sub sortFilesByNum
          # If the filename contains no trailing numbers we assume it's supposed
          # to be the first file in the set (as this is how Google's photo
          # management software, Picasa, renames its files).
-         if ($fileNum eq '') 
+         if ($fileNum eq '')
          {
             $fileNum = 0;
          }
       }
-      else 
+      else
       {
          # The files don't follow an expected naming pattern.  Hence we stop
          # sorting these files by number.
          $gLogger->error("'$file' does not adhere to established naming " .
-                         "conventions. Hence we cannot sort this folder by ". 
+                         "conventions. Hence we cannot sort this folder by ".
                          "number.");
          return FALSE;
       }
 
       # If in a previous iteration of this loop we found a file named according
-      # to the standard naming convention, compare that filename with the 
+      # to the standard naming convention, compare that filename with the
       # current one.  If the naming conventions don't match we stop sorting
       # these files by number.
       if(defined($prevMatch) && ($prevMatch ne $currMatch))
@@ -892,16 +907,16 @@ sub sortFilesByNum
 }
 
 #-------------------------------------------------------------------------------
-# Sorts the files by their DateTimeOriginal EXIF metadata value in ascending 
-# order.  The files cannot be sorted if all files do not have a valid value 
+# Sorts the files by their DateTimeOriginal EXIF metadata value in ascending
+# order.  The files cannot be sorted if all files do not have a valid value
 # for DateTimeOriginal.
 #
-# \param $_[0] [in_out] A reference to a hash of filenames keyed on the base 
+# \param $_[0] [in_out] A reference to a hash of filenames keyed on the base
 #                       filename.
 # \param $_[1] [in_out] A reference to a scalar that will represent the
 #                       maximum sequence number once the files are sorted.
 #
-# \return TRUE if the files could be sorted and a sequence number is assigned 
+# \return TRUE if the files could be sorted and a sequence number is assigned
 #         to each file in the reference hash; FALSE otherwise.
 #-------------------------------------------------------------------------------
 sub sortFilesByTime
@@ -914,9 +929,9 @@ sub sortFilesByTime
    my $fileDateTime = undef;
 
    # A temporary hash to store the filenames we process (values) keyed
-   # on the DateTimeOriginal value their EXIF metadata.  This allows us to 
+   # on the DateTimeOriginal value their EXIF metadata.  This allows us to
    # **alphanumerically** sort the keys to determine the sequence number or
-   # sort order for each file.   
+   # sort order for each file.
    my %fileDateTimes = ();
 
    foreach my $file (sort {lc $a cmp lc $b} keys(%$files_hr))
@@ -947,7 +962,7 @@ sub sortFilesByTime
 
          AddFileDateTimeEntry(\%fileDateTimes, $fileDateTime, $file);
       }
-   }   
+   }
 
    # Assign a sequence number to each file by sorting the fileDateTimes hash.
    $$seqNum_sr = 1;
@@ -968,9 +983,9 @@ sub sortFilesByTime
 #-------------------------------------------------------------------------------
 # Generates a report about the files that we attempted to rename.
 #
-# \param $_[0] [in] A reference to a hash of filenames keyed on the base 
+# \param $_[0] [in] A reference to a hash of filenames keyed on the base
 #                   filename that need to be or have been renamed.
-# \param $_[1] [in] A reference to an array of filenames that were ignored by 
+# \param $_[1] [in] A reference to an array of filenames that were ignored by
 #                   this script.
 # \param $_[2] [in] The absolute path of the directory in which the files
 #                   were processed (and ignored).
@@ -987,7 +1002,7 @@ sub generateRenameReport
    my $statusCounts_hr = getStatusCounts($files_hr);
    my $numFilesProcessed = scalar(keys(%$files_hr));
    my $numFilesIgnored = scalar(@$ignoredFiles_ar);
-  
+
    my $dividerLine = "=" x 77 . "\n";
 
    # Write header information to file.
@@ -996,7 +1011,7 @@ sub generateRenameReport
    $report .= "File Renaming Report\n";
    $report .= "\n";
    $report .= "Folder: $dirName\n";
-   $report .= "\n";   
+   $report .= "\n";
    $report .= "  Files with status 'Renamed':     $statusCounts_hr->{Renamed}\n";
    $report .= "  Files with status 'Ready':       $statusCounts_hr->{Ready}\n";
    $report .= "  Files with status 'Unprocessed': $statusCounts_hr->{Unprocessed}\n";
@@ -1033,7 +1048,7 @@ sub generateRenameReport
                          $file,
                          'N/A',
                          'Ignored');
-   }   
+   }
 
    return $report;
 }
@@ -1048,7 +1063,7 @@ sub generateRenameReport
 #       'Error'       => 0
 #    };
 #
-# \param $_[0] [in] A reference to a hash of filenames keyed on the base 
+# \param $_[0] [in] A reference to a hash of filenames keyed on the base
 #                   filename that need to be or have been renamed.
 #
 # \return A reference to the status counts hash described above.
@@ -1075,6 +1090,6 @@ sub getStatusCounts
          $gLogger->logdie("Unexpected file status '$status'.");
       }
    }
-   
+
    return \%statusCounts;
 }
