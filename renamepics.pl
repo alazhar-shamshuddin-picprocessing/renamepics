@@ -229,11 +229,12 @@ use Pod::Usage;                  # For printing usage clause and man page.
 ################################################################################
 # Global Variables
 ################################################################################
+
 use constant TRUE    => 1;
 use constant FALSE   => 0;
 
 my $gMaxSeqNumDigits = 4;
-my @gFileTypes       = ('jpg', 'mp4', 'wmv');
+my @gFileTypes       = ('jpg', 'mov', 'mp4', 'wmv');
 
 my $gLogger          = undef;
 my %gCmds            = ();
@@ -242,12 +243,12 @@ my %gRenameReport    = ();
 ################################################################################
 # Subroutines
 #
-#    All subroutinese are organized alphanumerically in the following
+#    All subroutines are organized alphanumerically in the following
 #    categories:
 #
 #       - Main
 #            - main
-#       - Intialization
+#       - Initialization
 #            - initLogger
 #            - processCmdLineArgs
 #       - Renaming
@@ -281,7 +282,7 @@ sub main
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Intialization Subroutines
+# Initialization Subroutines
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #-------------------------------------------------------------------------------
@@ -507,7 +508,7 @@ sub AddFileDateTimeEntry
 # filename.
 #
 # Note: This is a helper method to the SortFilesByNum function.  If the key
-# already exists, it is incremented until a unique value is found.  (The only
+# already exists, it is incremented until a unique value is found.  The only
 # time a numerical key will exist is when you have the same filename in a folder
 # with different file types or extensions.  For example:
 #
