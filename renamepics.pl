@@ -234,7 +234,7 @@ use constant TRUE    => 1;
 use constant FALSE   => 0;
 
 my $gMaxSeqNumDigits = 4;
-my @gFileTypes       = ('jpg', 'mov', 'mp4', 'wmv');
+my @gFileTypes       = ('jpg', 'jpeg', 'mov', 'mp4', 'wmv');
 
 my $gLogger          = undef;
 my %gCmds            = ();
