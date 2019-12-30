@@ -556,6 +556,9 @@ sub AddFileNumEntry
 #    1. This method will always generate filenames with lowercased
 #       extensions.
 #
+#    2. If the file extension is 'jpeg', it will get converted to 'jpg' for
+#       consistency.
+#
 #    2. If sequence number contains more digits than the maximum allowable
 #       digits, the maximum will be ignored.  If it contains fewer digits,
 #       if will be left-padded with zeros.
@@ -579,6 +582,11 @@ sub generateNewName
       $gLogger->logdie("File sequence number ($seqNum) is longer than the " .
                        "maximum allowable sequence number ($maxSeqNumLength " .
                        "digits).");
+   }
+
+   if ($extension eq 'jpeg')
+   {
+      $extension = 'jpg';
    }
 
    my $seqNumFormat = '%0' . $maxSeqNumLength . 'd';
