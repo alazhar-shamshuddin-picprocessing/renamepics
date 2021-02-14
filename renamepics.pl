@@ -28,7 +28,7 @@ Specifies the base filename for the renamed files (e.g., Something.jpg could
 become "Party_0001.jpg" if this command is called with the following
 option: --basname=Party).
 
-Note: This script enforces a tight naming convention. Base filenames must
+Note: This script enforces a strict naming convention. Base filenames must
 start with a capital letter and only contain alphanumeric characters and
 underscores.
 
@@ -84,7 +84,7 @@ This program allows you to:
       sortby=num, or sortby=time command line options.
 
    2. Rename these files with a consistent naming conventing by providing a
-      basename using --basename=<base filename> command line option.
+      basename using the basename=<base filename> command line option.
 
 These command line options and their impact on the resulting filenames
 are described below.
@@ -163,7 +163,7 @@ The script will terminate with an error message without renaming any files.
 To rename these files by time, we must delete those files with the missing
 information (or add the DateTimeOrigin EXIF meta data to them, if possible).
 Assuming we deleted SOMETHING-3.wmv, the files in this example will be
-named as follows after executing with the following command:
+named as follows after executing the following command:
 
    renamepics.pl -s time -b Party /pics/party
 
@@ -200,7 +200,7 @@ status of each file.  Those statuses are defined below:
                 file and/or screen output for details.
 
    Ignored:     This file was ignored because it does not contain a file
-                extension that this script was designed to process.
+                extension that this script is designed to process.
 
 =head1 REVISION HISTORY
 
@@ -559,9 +559,9 @@ sub AddFileNumEntry
 #    2. If the file extension is 'jpeg', it will get converted to 'jpg' for
 #       consistency.
 #
-#    2. If sequence number contains more digits than the maximum allowable
-#       digits, the maximum will be ignored.  If it contains fewer digits,
-#       if will be left-padded with zeros.
+#    3. If sequence number contains more digits than the maximum allowable
+#       digits, the script will abort.  If it contains fewer digits, it will
+#       be left-padded with zeros.
 #
 # \param $_[0] [in] The base filename.
 # \param $_[1] [in] The sequence number.
@@ -686,8 +686,6 @@ sub processDir
 #
 # \param $_[0] [in_out] A reference to a hash of filenames keyed on the base
 #                       filename that need to be renamed.
-# \param $_[1] [in-out] A reference to rename record hash for the
-#                       directory being processed.
 #
 # \return None.
 #-------------------------------------------------------------------------------
@@ -938,7 +936,7 @@ sub sortFilesByTime
    my $fileDateTime = undef;
 
    # A temporary hash to store the filenames we process (values) keyed
-   # on the DateTimeOriginal value their EXIF metadata.  This allows us to
+   # on the DateTimeOriginal value of their EXIF metadata.  This allows us to
    # **alphanumerically** sort the keys to determine the sequence number or
    # sort order for each file.
    my %fileDateTimes = ();
