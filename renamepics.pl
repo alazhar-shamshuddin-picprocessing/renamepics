@@ -229,7 +229,6 @@ use Pod::Usage;                  # For printing usage clause and man page.
 ################################################################################
 # Global Variables
 ################################################################################
-
 use constant TRUE    => 1;
 use constant FALSE   => 0;
 
