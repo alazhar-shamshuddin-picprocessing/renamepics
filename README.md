@@ -3,17 +3,21 @@ Provides services to rename (and renumber) picture and movie files in a given
 directory so that they adhere to a prescribed naming convention.
 
 ## Quick Start
-Refer to the [PicProcessing/Docker Git Repository](https://github.com/alazhar-shamshuddin-picprocessing/docker).  It contains:
-1. A copy of some Perl modules that are require by all picprocessing apps.
-2. A [Dockerfile](https://github.com/alazhar-shamshuddin-picprocessing/docker/blob/main/Dockerfile) with detailed comments.  You may run any picprocessing app
-(including renamepics.pl) through docker or independently on your host machine.
-The Dockerfile contains the commands you would enter on your host machine to
+Refer to the 
+[PicProcessing/Docker Git Repository](https://github.com/alazhar-shamshuddin-picprocessing/docker).
+It contains:
+1. A copy of some Perl modules that are required by all picprocessing apps.
+2. A [Dockerfile](https://github.com/alazhar-shamshuddin-picprocessing/docker/blob/main/Dockerfile)
+with detailed comments.  You may run any picprocessing app (including 
+renamepics.pl) through docker or independently on your host machine.  The
+Dockerfile contains the commands you would enter on your host machine to
 run the app outside of docker.
 
 ## Installation Instructions
 To ensure renamepics.pl runs on your host machine, follow the steps below
-(or the commands in the [Dockerfile](https://github.com/alazhar-shamshuddin-picprocessing/docker/blob/main/Dockerfile) referenced 
-above):
+(or the commands in the 
+[Dockerfile](https://github.com/alazhar-shamshuddin-picprocessing/docker/blob/main/Dockerfile)
+referenced above):
 1.  Download cpanm:
 
     `curl -L https://cpanmin.us | perl - --sudo App::cpanminus` 
